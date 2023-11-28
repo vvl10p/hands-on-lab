@@ -17,5 +17,19 @@ namespace hands_on_lab.Controllers
 
             return Ok(kerdesek);
         }
+
+        [HttpGet]
+        [Route("questions/{sorszám}")]
+        public ActionResult kerdesSorszam(int sorszám)
+        {
+            HajosContext context = new HajosContext();
+            var kérdés = (from x in context.Questions
+                          where x.QuestionId == sorszám
+                          select x).FirstOrDefault();
+
+            if (kérdés == null) return BadRequest("Nincs ilyen sorszámú kérdés");
+
+            return new JsonResult(kérdés);
+        }
     }
 }
